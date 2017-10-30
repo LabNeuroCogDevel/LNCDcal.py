@@ -1,0 +1,5 @@
+[Calendar]
+  email = 'yyy@xxx.iam.gserviceaccount.com'
+  p12   = '/path/to/creds.p12'
+  calID = 'email@gmail.com'
+  tz    = 'America/New_York'
