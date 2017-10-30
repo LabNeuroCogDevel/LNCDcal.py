@@ -1,1 +1,10 @@
 cal.ini
+
+__pycache__/
+*.pyc
+.cache/
+
+/dist/
+/*.egg-info
+
+.*.swp

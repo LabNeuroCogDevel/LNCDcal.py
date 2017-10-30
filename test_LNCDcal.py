@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
+
+#
+# Usage:
+#   ~/.local/bin/pytest test_LNCDcal.py
+#
+
 import pytest
-from gcal_serviceAccount import *
+from LNCDcal import *
 import datetime
 
 def test_time2g_summer():

@@ -9,7 +9,7 @@ from oauth2client import tools
 
 import datetime,pytz
 import re
-import ConfigParser
+import configparser
 #"""
 # timezone/DST correction:
 #"""
@@ -99,7 +99,7 @@ class LNCDcal():
 
     # Define the auth scopes to request.
     # -- read in from ini
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     config.read(ini)
 
     service_account_email = config.get('Calendar','email')
@@ -159,4 +159,3 @@ class LNCDcal():
     res = self.cal.events().delete(calendarId=self.calendarId,eventId=eventId).execute()
     return(res)
      
-  
