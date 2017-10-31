@@ -3,9 +3,7 @@ from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
 import httplib2
-from oauth2client import client
-from oauth2client import file
-from oauth2client import tools
+#from oauth2client import client, file, tools
 
 import datetime,pytz
 import re
@@ -41,7 +39,9 @@ def get_service(api_name, api_version, scope, key_file_location,
   credentials = ServiceAccountCredentials.from_p12_keyfile(
     service_account_email, key_file_location, scopes=scope)
 
-  http = credentials.authorize(httplib2.Http())
+  # UPMC MItM's our SSL connection: disable_ssl_certificate_validation=True
+  # todo: add as config switch
+  http = credentials.authorize(httplib2.Http(disable_ssl_certificate_validation=True))
 
   # Build the service object.
   service = build(api_name, api_version, http=http)
