@@ -70,7 +70,7 @@ def calInfo(e):
      'note': e.get('description'),
      'calid': e.get('id'),
      'summary': e.get('summary'),
-     'icalUID': e.get('iCalUID')
+     'htmlLink': e.get('htmlLink')
     }
  
     c=re.compile('(?P<study>[a-z/]+)[ -]*(?P<age>[0-9.]+) *yo(?P<sex>m|f) *\(?(?P<subjinit>[A-Z]{2,3})\)? *(?P<ra>[A-Z]{2,3})[ -]*(?P<score>[0-9.]+)',re.I)
@@ -160,6 +160,5 @@ class LNCDcal():
     return(eventres)
 
   def delete_event(self,eventId):
-    res = self.cal.events().delete(calendarId=self.calendarId,eventId=eventId).execute()
+    res = self.cal.events().delete(calendarId=self.calendarId, eventId=eventId).execute()
     return(res)
-     

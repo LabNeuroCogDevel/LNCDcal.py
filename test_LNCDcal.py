@@ -55,5 +55,4 @@ class TestCal():
 
 
      delres = self.cal.delete_event(e['id'])
-     assert(delres == '') 
- 
+     assert(delres == '')
