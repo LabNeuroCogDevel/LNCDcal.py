@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='LNCDcal',
-      version='0.1',
+      version='0.1.1',
       description='google calendar for the LNCD',
       url='http://github.com/LabNeuroCogDevel/LNCDcal.py',
       author='Will Foran',
