@@ -36,46 +36,50 @@ def to_utc(dt,tzstr="America/New_York"):
 def get_service(api_name, api_version, scope, key_file_location,
                 service_account_email):
 
-  credentials = ServiceAccountCredentials.from_p12_keyfile(
-    service_account_email, key_file_location, scopes=scope)
+    credentials = ServiceAccountCredentials.from_p12_keyfile(
+      service_account_email, key_file_location, scopes=scope)
+  
+    # UPMC MItM's our SSL connection: disable_ssl_certificate_validation=True
+    # todo: add as config switch
+    http = credentials.authorize(httplib2.Http(disable_ssl_certificate_validation=True))
+  
+    # Build the service object.
+    service = build(api_name, api_version, http=http)
+  
+    return service
 
-  # UPMC MItM's our SSL connection: disable_ssl_certificate_validation=True
-  # todo: add as config switch
-  http = credentials.authorize(httplib2.Http(disable_ssl_certificate_validation=True))
 
-  # Build the service object.
-  service = build(api_name, api_version, http=http)
-
-  return service
-
-"""
-google time string to datetime
--> google gives back time in localtime
-"""
 def g2time(dtstr):
-  return(datetime.datetime.strptime(dtstr[0:18],'%Y-%m-%dT%H:%M:%S'))
-"""
-get calendar info from google api returned dict
-split summary into expected parts: study age sex subj_initials ra score
-"""
+    """
+    google time string to datetime
+    -> google gives back time in localtime
+    """
+    return(datetime.datetime.strptime(dtstr[0:18],'%Y-%m-%dT%H:%M:%S'))
+
+
 def calInfo(e):
-  d={
-   'start': e['start']['dateTime'],
-   'starttime': g2time(e['start']['dateTime']),
-   'dur_hr': (g2time(e['end']['dateTime']) - g2time(e['start']['dateTime'])).seconds/60/60,
-   'creator': e['creator'].get('displayName'),
-   'note': e.get('description'),
-   'calid': e.get('id'),
-   'summary': e.get('summary')
-  }
-
-  c=re.compile('(?P<study>[a-z/]+)[ -]*(?P<age>[0-9.]+) *yo(?P<sex>m|f) *\(?(?P<subjinit>[A-Z]{2,3})\)? *(?P<ra>[A-Z]{2,3})[ -]*(?P<score>[0-9.]+)',re.I)
-  m=re.search(c,e['summary'])
-  if m:
-    md=m.groupdict()
-    d={**d,**md}
-
-  return(d)
+    """
+    get calendar info from google api returned dict
+    split summary into expected parts: study age sex subj_initials ra score
+    """
+    d = {
+     'start': e['start']['dateTime'],
+     'starttime': g2time(e['start']['dateTime']),
+     'dur_hr': (g2time(e['end']['dateTime']) - g2time(e['start']['dateTime'])).seconds/60/60,
+     'creator': e['creator'].get('displayName'),
+     'note': e.get('description'),
+     'calid': e.get('id'),
+     'summary': e.get('summary'),
+     'icalUID': e.get('iCalUID')
+    }
+ 
+    c=re.compile('(?P<study>[a-z/]+)[ -]*(?P<age>[0-9.]+) *yo(?P<sex>m|f) *\(?(?P<subjinit>[A-Z]{2,3})\)? *(?P<ra>[A-Z]{2,3})[ -]*(?P<score>[0-9.]+)',re.I)
+    m=re.search(c,e['summary'])
+    if m:
+      md=m.groupdict()
+      d={**d,**md}
+ 
+    return(d)
 
 
 def time2g(dt,tzstr="America/New_York"):
