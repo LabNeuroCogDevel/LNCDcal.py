@@ -175,3 +175,11 @@ class LNCDcal():
             calendarId=self.calendarId,
             eventId=eventId).execute()
         return(res)
+
+    def get_event(self, eventId):
+        """ get an event: useful for testing successful delete"""
+        res = self.cal.events().get(
+            calendarId=self.calendarId,
+            eventId=eventId).execute()
+        return(res)
+
