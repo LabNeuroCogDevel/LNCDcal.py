@@ -118,6 +118,7 @@ class LNCDcal():
         service_account_email = config.get('Calendar', 'email')
         key_file_location = config.get('Calendar', 'p12')
         self.calendarId = config.get('Calendar', 'calID')
+        self.backCalID = config.get('Calendar', 'backCalID', fallback=None)
         self.tzstr = config.get('Calendar', 'tz')
 
         scope = ['https://www.googleapis.com/auth/calendar']
@@ -181,5 +182,16 @@ class LNCDcal():
         res = self.cal.events().get(
             calendarId=self.calendarId,
             eventId=eventId).execute()
+        return(res)
+
+    def move_event(self, eventId):
+        """move event to different calendar we have a 'backCalID' in config"""
+        if self.backCalID is None:
+            raise Exception("No backCalID in config, but trying to move")
+        print("moving %s to %s" % (eventId, self.backCalID))
+        res = self.cal.events().move(
+                calendarId=self.calendarId,
+                eventId=eventId,
+                destination=self.backCalID).execute()
         return(res)
 

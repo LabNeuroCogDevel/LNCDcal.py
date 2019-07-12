@@ -1,5 +1,7 @@
+; calendar id's found under "Inegrate calendar" section of calendar settings
 [Calendar]
   email = 'yyy@xxx.iam.gserviceaccount.com'
   p12   = '/path/to/creds.p12'
   calID = 'email@gmail.com'
   tz    = 'America/New_York'
+  backCalID = xxxx@group.calendar.google.com

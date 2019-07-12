@@ -1,14 +1,31 @@
 # LNCDcal
-operations on goolge calendar for LNCD
+operations on Goolge calendar for LNCD.
+Convenience functions on top of `googleapiclient.discovery.build` using `oauth2client.service_account.ServiceAccountCredentials` 
 
-this has to have been implemented better elsewhere
+This has to have been implemented better elsewhere
+
+## What
+provides:
+ * `get_event`
+ * `insert_event`
+ * `delete_event`
+ * `move_event`
+ * `upcoming`
+ * `find_in_range`
+
+from settings in `cal.ini` specifying
+  * a service account (`email` field)
+  * path to a `*.p12` key 
+  * calendar id where service account has manager permissions (see google calendar settings)
+  * Optionally: a different calendar id for `move_event`
+
 
 ## Install
 ```
 pip3 install git+https://github.com/LabNeuroCogDevel/LNCDcal.py
 ```
 
-## Config
+## Configure
 
 Configuration in ini style file (via `configparser`). see `cal.ini.example`.
 

@@ -61,3 +61,22 @@ class TestCal():
 
         delres = self.cal.delete_event(e['id'])
         assert(delres == '')
+
+    def test_insert_move(self):
+        """ try moving to another calendar"""
+        dt = datetime.datetime.now()
+        dur_h = 2
+        e = self.cal.insert_event(dt, dur_h, 'TEST ONLY', 'longer desc')
+        print("create: %s" % e)
+        assert e['id']
+
+        # move
+        me = self.cal.move_event(e['id'])
+        print("move: %s" % me)
+        assert self.cal.get_event(me['id'])
+        assert self.cal.get_event(e['id'])['status'] == 'cancelled'
+
+        # clean up
+        self.cal.cal.events().delete(
+            calendarId=self.cal.backCalID,
+            eventId=me['id']).execute()
